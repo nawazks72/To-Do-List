@@ -1,11 +1,16 @@
 const { Pool } = require('pg');
 
-// Use DATABASE_URL if available (Render), otherwise use local config
-const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:mypassword@localhost:5432/todoapp';
+// Use DATABASE_URL from environment variables (local .env or Render env)
+const connectionString = process.env.DATABASE_URL;
+
+if (!connectionString) {
+  console.error('❌ DATABASE_URL is missing. Please check your .env file or Render environment variables.');
+  process.exit(1);
+}
 
 const pool = new Pool({
   connectionString,
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
+  ssl: connectionString.includes('localhost') ? false : { rejectUnauthorized: false }
 });
 
 pool.connect((err, client, release) => {

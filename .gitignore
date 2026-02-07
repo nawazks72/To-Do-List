@@ -3,3 +3,4 @@ todos.db
 .DS_Store
 npm-debug.log
 .env
+.env
