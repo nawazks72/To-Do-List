@@ -1,0 +1,26 @@
+{
+  "name": "todo-list",
+  "version": "1.0.0",
+  "description": "This project serves as both a practical productivity solution and a foundational example  for web development learners. Its structure and logic are simple enough to be understood  by beginners, yet the implementation demonstrates essential principles such as event driven programming, DOM manipulation, and responsive design. The app is entirely  browser-based, making it a lightweight, install-free, and offline-compatible task manager.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nawazks72/To-Do-List.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nawazks72/To-Do-List/issues"
+  },
+  "homepage": "https://github.com/nawazks72/To-Do-List#readme",
+  "dependencies": {
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "sqlite3": "^5.1.7"
+  }
+}
