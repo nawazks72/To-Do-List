@@ -1,33 +1,32 @@
-const sqlite3 = require('sqlite3').verbose();
-const path = require('path');
+const { Pool } = require('pg');
 
-const dbPath = path.resolve(__dirname, 'todos.db');
+// Use DATABASE_URL if available (Render), otherwise use local config
+const connectionString = process.env.DATABASE_URL || 'postgresql://postgres:mypassword@localhost:5432/todoapp';
 
-const db = new sqlite3.Database(dbPath, (err) => {
-  if (err) {
-    console.error('Error opening database ' + dbPath + ': ' + err.message);
-  } else {
-    console.log('Connected to the SQLite database.');
-    db.run(`CREATE TABLE IF NOT EXISTS tasks (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      text TEXT NOT NULL,
-      completed BOOLEAN DEFAULT 0,
-      due_date TEXT,
-      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-    )`, (err) => {
-      if (err) {
-        console.error('Error creating table: ' + err.message);
-      } else {
-        // Attempt to add column if it doesn't exist (migration for existing db)
-        db.run(`ALTER TABLE tasks ADD COLUMN due_date TEXT`, (err) => {
-          // Ignore error if column already exists
-          if (err && !err.message.includes('duplicate column name')) {
-            console.log('Column check: ' + err.message);
-          }
-        });
-      }
-    });
-  }
+const pool = new Pool({
+  connectionString,
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
 
-module.exports = db;
+pool.connect((err, client, release) => {
+  if (err) {
+    return console.error('Error acquiring client', err.stack);
+  }
+  console.log('Connected to PostgreSQL database.');
+
+  // Create Table
+  client.query(`CREATE TABLE IF NOT EXISTS tasks (
+        id SERIAL PRIMARY KEY,
+        text TEXT NOT NULL,
+        completed BOOLEAN DEFAULT FALSE,
+        due_date DATE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`, (err, result) => {
+    release();
+    if (err) {
+      return console.error('Error creating table', err.stack);
+    }
+  });
+});
+
+module.exports = pool;
