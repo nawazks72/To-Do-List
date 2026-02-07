@@ -1,39 +1,86 @@
-# TO-DO-LIST
-This project serves as both a practical productivity solution and a foundational example 
-for web development learners. Its structure and logic are simple enough to be understood 
-by beginners, yet the implementation demonstrates essential principles such as event
-driven programming, DOM manipulation, and responsive design. The app is entirely 
-browser-based, making it a lightweight, install-free, and offline-compatible task manager.
+# TaskMaster - Modern To-Do & Productivity Dashboard
 
-# Main Features of the Code 
-### 1. Task Addition Functionality
- Users can enter a task using the input box and click the "Add Task" button to insert it into the table. Input validation prevents blank tasks from being added.
+A powerful, full-stack task management application designed to help you organize your work and life. Built with Node.js, Express, and a modern frontend interface.
 
-### 2. Tabular Task Layout
-Tasks are displayed in a clean, structured table with four columns: 
-Task Name, Completed, Date Added, and Action (Delete).
+![TaskMaster Screenshot](https://via.placeholder.com/800x400?text=TaskMaster+Dashboard+Preview)
 
-Inspired by Notion-like organization for improved readability.
-   
- ### 3. Task Completion with Checkbox
-Each task includes a checkbox to mark it as complete.
-Completed tasks are visually indicated with a line-through style and a faded color (text-decoration: line-through).
+## 🚀 Features
 
-### 4. Auto Date Insertion
-Each task row automatically includes the current date when added.
-Uses JavaScript's Date object and toLocaleDateString() for formatted output.
+### 1. **Dashboard Overview**
+-   **Stats at a Glance**: View total, pending, and completed tasks instantly.
+-   **Quick Add**: innovative task input with date selection.
+-   **Recent Tasks**: See your latest activity.
 
-### 5. Delete Task Option
-Each row contains a "Delete" button to remove tasks from the table. 
-Task removal happens dynamically without a page refresh.
+### 2. **Calendar View** 📅
+-   **Monthly Overview**: Visual calendar grid to see your schedule.
+-   **Task Integration**: Tasks appear directly on their due dates.
+-   **Navigation**: Easily switch between months.
 
-### 6. Responsive Design
-CSS media queries ensure proper layout adaptation on smaller screens like phones and tablets.
-Input elements stack vertically on small devices (max-width: 600px).
+### 3. **Smart Task Management** ✅
+-   **All Tasks View**: Search and filter tasks by status (Pending/Completed).
+-   **Due Dates**: Set deadlines to keep track of priorities.
+-   **Status Tracking**: Mark tasks as complete with a satisfying click.
 
-### 7. Modern UI/UXo
-Clean, modern design with soft colors, subtle shadows, and smooth rounded corners.Styled using pure CSS for simplicity and compatibility.
+### 4. **Settings & Data Control** ⚙️
+-   **Data Management**: Clear all application data with a single click.
+-   **Persistent Storage**: All data is safely stored in a local SQLite database.
 
-### 8. JavaScript-Powered Interactivity
-All dynamic behaviors (add/delete/mark complete) are handled using vanilla JavaScript.
-DOM manipulation is used for creating and managing table rows. 
+## 🛠️ Tech Stack
+
+-   **Frontend**: HTML5, CSS3 (Custom Properties, Flexbox/Grid), Vanilla JavaScript (ES6+).
+-   **Backend**: Node.js, Express.js.
+-   **Database**: SQLite (Persistent local storage).
+
+## 📦 Installation & Setup
+
+1.  **Clone the Repository**
+    ```bash
+    git clone https://github.com/nawazks72/To-Do-List.git
+    cd To-Do-List
+    ```
+
+2.  **Install Dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Start the Server**
+    ```bash
+    npm start
+    # OR for development with nodemon:
+    # npm run dev
+    ```
+
+4.  **Access the App**
+    Open your browser and navigate to: `http://localhost:3000`
+
+## 📂 Project Structure
+
+```
+To-Do-List/
+├── client/              # Frontend files
+│   ├── index.html       # Single Page Application entry
+│   ├── style.css        # Global styles and themes
+│   └── script.js        # UI logic, API calls, Navigation
+├── server/              # Backend files
+│   ├── index.js         # Entry point, Server configuration
+│   ├── database.js      # SQLite connection & Schema
+│   └── routes.js        # API Endpoints (GET, POST, PUT, DELETE)
+├── .gitignore           # Git exclusions
+├── package.json         # Dependencies and Scripts
+└── README.md            # Project Documentation
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to submit a Pull Request.
+
+1.  Fork the project.
+2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4.  Push to the branch (`git push origin feature/AmazingFeature`).
+5.  Open a Pull Request.
+
+## 📄 License
+
+Distributed under the MIT License. See `LICENSE` for more information.
