@@ -21,21 +21,23 @@ fill in the details as follows:
 -   **Build Command**: `npm install`
 -   **Start Command**: `npm start`
 
-## Step 4: Persistent Storage (Critical for Database) 💾
-**Important:** If you use the Free Tier, your database is *ephemeral* (it resets when the server restarts). To keep your data, you need to add a **Disk**.
+## Step 4: Configure Database (PostgreSQL) �
+This app now uses PostgreSQL.
 
-1.  Scroll down to **Disks** (Advanced/paid feature).
-2.  Click **Add Disk**.
-3.  **Name**: `sqlite-data`
-4.  **Mount Path**: `/opt/render/project/src/data` (We need to update the code to look here if you do this).
-    *   *Alternative for Free Tier*: Use the app as-is. It will work, but data might be lost on redeploys.
+1.  **Create a PostgreSQL Database on Render**:
+    *   Go to **New +** -> **PostgreSQL**.
+    *   give it a name (e.g., `todo-db`).
+    *   **Region**: Same as your web service.
+    *   Click **Create Database**.
+
+2.  **Connect Web Service to Database**:
+    *   Once created, copy the **Internal Database URL** from the database settings.
+    *   Go to your `todo-list-app` **Web Service** -> **Environment**.
+    *   Add a new Environment Variable:
+        *   **Key**: `DATABASE_URL`
+        *   **Value**: Paste the Internal Database URL.
 
 ## Step 5: Deploy
-Click **Create Web Service**. Render will clone your repo, install dependencies, and start the server.
+Click **Create Web Service** (or if already created, go to **Manual Deploy** -> **Deploy latest commit**).
 
----
-
-### Note on Database Path
-By default, the app writes `todos.db` to the root folder.
--   **Free Tier**: This works fine but isn't persistent.
--   **Paid with Disk**: You'll need to tell the app to save the DB in the mounted disk path. Let me know if you want to upgrade to a paid disk, and I can adjust the code to support that path!
+Render will now use your managed PostgreSQL database. Your data is safe and persistent!

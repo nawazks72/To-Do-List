@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const db = require('./database');
+const pool = require('./database');
 
 // GET all tasks
 router.get('/tasks', (req, res) => {
     const sql = 'SELECT * FROM tasks ORDER BY created_at DESC';
-    db.all(sql, [], (err, rows) => {
+    pool.query(sql, [], (err, result) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
         }
         res.json({
             message: 'success',
-            data: rows
+            data: result.rows
         });
     });
 });
@@ -20,17 +20,17 @@ router.get('/tasks', (req, res) => {
 // POST new task
 router.post('/tasks', (req, res) => {
     const { text, due_date } = req.body;
-    const sql = 'INSERT INTO tasks (text, due_date) VALUES (?, ?)';
+    const sql = 'INSERT INTO tasks (text, due_date) VALUES ($1, $2) RETURNING *';
     const params = [text, due_date];
 
-    db.run(sql, params, function (err) {
+    pool.query(sql, params, (err, result) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
         }
         res.json({
             message: 'success',
-            data: { id: this.lastID, text, due_date, completed: 0 }
+            data: result.rows[0]
         });
     });
 });
@@ -40,17 +40,18 @@ router.put('/tasks/:id', (req, res) => {
     const { text, completed, due_date } = req.body;
     let updates = [];
     let params = [];
+    let paramCount = 1;
 
     if (text !== undefined) {
-        updates.push('text = ?');
+        updates.push(`text = $${paramCount++}`);
         params.push(text);
     }
     if (completed !== undefined) {
-        updates.push('completed = ?');
-        params.push(completed ? 1 : 0);
+        updates.push(`completed = $${paramCount++}`);
+        params.push(completed);
     }
     if (due_date !== undefined) {
-        updates.push('due_date = ?');
+        updates.push(`due_date = $${paramCount++}`);
         params.push(due_date);
     }
 
@@ -59,34 +60,34 @@ router.put('/tasks/:id', (req, res) => {
         return;
     }
 
-    const sql = `UPDATE tasks SET ${updates.join(', ')} WHERE id = ?`;
     params.push(req.params.id);
+    const sql = `UPDATE tasks SET ${updates.join(', ')} WHERE id = $${paramCount} RETURNING *`;
 
-    db.run(sql, params, function (err) {
+    pool.query(sql, params, (err, result) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
         }
         res.json({
             message: 'success',
-            changes: this.changes
+            data: result.rows[0]
         });
     });
 });
 
 // DELETE task
 router.delete('/tasks/:id', (req, res) => {
-    const sql = 'DELETE FROM tasks WHERE id = ?';
+    const sql = 'DELETE FROM tasks WHERE id = $1 RETURNING *';
     const params = [req.params.id];
 
-    db.run(sql, params, function (err) {
+    pool.query(sql, params, (err, result) => {
         if (err) {
             res.status(400).json({ error: err.message });
             return;
         }
         res.json({
             message: 'success',
-            changes: this.changes
+            data: result.rows[0]
         });
     });
 });
